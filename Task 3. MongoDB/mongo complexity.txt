@@ -1,0 +1,155 @@
+1. Вставка данных (insertOne, insertMany). Вставим новые тексты в таблицу "general"
+ЗАПРОC: 
+db["general"].insertOne({"text": "I am grateful to have the opportunity to pursue my dream, and I am determined to work hard and do whatever it takes to make it a reality. I know that the path to becoming a doctor will be challenging, but I am up for the challenge. I am confident that with hard work and determination, I can achieve my dream of becoming a successful doctor.", "text_id": 77777})
+
+ОТВЕТ: {
+  acknowledged: true,
+  insertedId: ObjectId('685b48c7cea7c770941c1d1e')
+}
+
+ЗАПРОС:
+db["general"].insertMany([{"text": "As I grew up, I realized that becoming a doctor was not going to be easy. It requires a lot of hard work and dedication, but I am more than willing to put in the effort to achieve my dream. I know that becoming a doctor will require a lot of schooling and training, but I am ready for the challenge.", "text_id": 888888},
+
+ОТВЕТ:
+{"text": "My dream is to become a successful doctor. Growing up, I always had a fascination with the human body and how it works.
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('685b4928cea7c770941c1d1f'),
+    '1': ObjectId('685b4928cea7c770941c1d20')
+  }
+}
+
+2. Обновление данных (updateOne). Обновим количество односложных слов в таблице "phonological_level"
+ЗАПРОС:
+db["phonological_level"].updateOne({"text_id": 8025119, "one_syllable_words": 330},
+	{$set: {"one_syllable_words": 333}})
+
+ОТВЕТ:
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+3. Выборка (простая). Выберем все тексты, у которых дескриптивность больше или равно 0.4
+ЗАПРОС:
+db["grammatical_level"].find({"descriptivity": {$gte: 0.4}})
+
+ОТВЕТ:
+{
+  _id: ObjectId('685b43a514ff74eddf52bcc9'),
+  '': 1156,
+  text_id: 8203301,
+  nominativity: 0.41,
+  descriptivity: 0.41,
+  nouns: 21,
+  adjectives: 21,
+  verbs: 23,
+  adverbs: 5,
+  pronouns: 10,
+  numerals: 0
+},
+{
+  _id: ObjectId('685b43a514ff74eddf52bcc9'),
+  '': 1156,
+  text_id: 8203301,
+  nominativity: 0.41,
+  descriptivity: 0.41,
+  nouns: 21,
+  adjectives: 21,
+  verbs: 23,
+  adverbs: 5,
+  pronouns: 10,
+  numerals: 0
+}
+
+ЗАПРОС: 
+db["lexical_level"].find({"cefr_level": "B2"}). Выберем все тексты, у которых CEFR уровень В2
+
+ОТВЕТ:
+{
+  _id: ObjectId('685b43b714ff74eddf52be22'),
+  '': 0,
+  text_id: 8025119,
+  ttr: 0.52,
+  rttr: 11.09,
+  cttr: 7.84,
+  cefr_level: 'B2'
+},
+{
+  _id: ObjectId('685b43b714ff74eddf52be23'),
+  '': 1,
+  text_id: 3223668,
+  ttr: 0.46,
+  rttr: 11.92,
+  cttr: 8.43,
+  cefr_level: 'B2'
+}, ......
+
+ЗАПРОС: 
+db["statistical_level"].find({$and: [{"fre": {$gte: 100}}, {"ari": {$lte: 200}}]}). Выберем все тексты, у которых показатель fre больше или равно 100 и меньше или равно 200
+
+ОТВЕТ:
+{
+  _id: ObjectId('685b43c614ff74eddf52c3fc'),
+  '': 3,
+  fre: 118.9,
+  gunning_fog_index: 141.14,
+  smog: 19,
+  ari: 147.34,
+  spache_formula: 39.25,
+  dale_chall: 8.25,
+  powers_sumner_kearl: 49.01,
+  coleman_liau_index: 13.15,
+  lix: 13.15,
+  rix: 82
+}.....
+
+ЗАПРОС: 
+db["lexical_level"].find({$and: [{"cefr_level": "A1"}, {"ttr": {$gte: 0.6}}]}). Выберем все тексты, у которых уровень CEFR А1 и лекскическое разнообразие больше или равно 0.6
+
+ОТВЕТ: 
+{
+  _id: ObjectId('685b43b714ff74eddf52c20e'),
+  '': 1004,
+  text_id: 1176351,
+  ttr: 0.81,
+  rttr: 6.84,
+  cttr: 4.83,
+  cefr_level: 'A1'
+}.....
+
+
+4. Удаление данных (deleteOne, deleteMany)
+ЗАПРОС: 
+db["lexical_level"].deleteMany({"cefr_level": "A2"}). Удалим все тексты с CEFR уровнем А2
+
+ОТВЕТ: 
+{
+  acknowledged: true,
+  deletedCount: 272
+}
+
+ЗАПРОС:  
+db["lexical_level"].deleteMany({$and: [{"ttr": {$lte: 0.5}}, {"cttr": {$gte: 8}}]}). Удалим все тексты, у которых лекскическое разнообразие меньше или равно 0.5 
+и скорректированное лексическое разнообразие больше или равно 8
+
+ОТВЕТ: 
+{
+  acknowledged: true,
+  deletedCount: 303
+}
+
+ЗАПРОС: 
+db["grammatical_level"].deleteOne({"text_id": 8025119}). Удалим один текст по его ID.
+
+ОТВЕТ: 
+{
+  acknowledged: true,
+  deletedCount: 1
+}
+
+ 

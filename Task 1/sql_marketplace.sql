@@ -1,3 +1,5 @@
+-- Создаем пространство 
+CREATE DATABASE client_general();
 -- Переходим в созданное пространство marketplace
 USE marketplace; 
 
